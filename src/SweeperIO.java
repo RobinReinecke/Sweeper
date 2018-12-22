@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -8,6 +9,8 @@ import java.util.Scanner;
  */
 public class SweeperIO {
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void printField(SweeperField[][] field, Boolean uncoverd) {
         StringBuilder sb = new StringBuilder("  |");
@@ -33,29 +36,31 @@ public class SweeperIO {
     }
     
     public static SweeperCoordinate requireCoordinate(int fieldsize){
-        System.out.print("Enter next coordinate (e.g. \"H4\") :");
-
         SweeperCoordinate cord = new SweeperCoordinate();
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
         String coordinate = "";
         do {
+            System.out.print("Enter next coordinate (e.g. \"H4\"): ");
             coordinate = scanner.next();
-        } while(cord.setCoordinate(coordinate, fieldsize, ALPHABET));
-        scanner.close();
+        } while(!cord.setCoordinate(coordinate, fieldsize, ALPHABET));
 
         return cord;
     }
 
     public static SweeperAction requireAction(){
-        System.out.print("Enter action (1 for ’move onto’ , 2 for ’defuse’)");
-        Scanner scanner = new Scanner(System.in);
-        String action = "";
-        do {
-            action = scanner.next();
-        } while(action != "1" || action != "0");
-        scanner.close();
+        //Scanner scanner = new Scanner(System.in);
+        int action = -1;
+        do {    
+            System.out.print("Enter action (1 for ’move onto’ , 2 for ’defuse’): ");
+            try {
+                action = scanner.nextInt();
+            } catch(InputMismatchException exception) {
+                scanner.nextLine();
+                scanner.reset();
+            }
+        } while(action != 1 && action != 2);
 
-        if(action == "1") {
+        if(action == 1) {
             return SweeperAction.MOVEONTO;
         }
         else {
@@ -63,7 +68,17 @@ public class SweeperIO {
         }
     }
 
-    public static void printDefuse(SweeperCoordinate coordinate,Boolean success){
-        System.out.println();
+    public static void printDefuse(SweeperCoordinate coordinate, Boolean success) {
+        System.out.println("Trying to defuse'" + coordinate.toString() + "'");
+        System.out.println(success ? "Defused a landmine!" : "Nothing happend!");
+    }
+
+    public static void printMoveOnto(SweeperCoordinate coordinate, Boolean success) {
+        System.out.println(success ? "Moving onto '" + coordinate.toString() + "'" : 
+            "Stepped on a landmine!");
+    }
+
+    public static void printWin(){
+        System.out.println("You won!");
     }
 }

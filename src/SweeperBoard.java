@@ -1,7 +1,5 @@
 import java.util.Random;
 
-import javax.lang.model.util.ElementScanner6;
-
 /**
  * Spielfeld.
  * 
@@ -13,7 +11,26 @@ public class SweeperBoard {
     private SweeperField[][] field;
     
     public SweeperField[][] getField(){
-        return field;
+        return this.field;
+    }
+
+    private int fieldsize;
+
+    public int getFieldsize(){
+        return this.fieldsize;
+    }
+
+    public Boolean getStillUndefusedMines(){
+        for (int i = 0; i < field[0].length; i++) {
+            for (int j = 0; j < field[1].length; j++) {
+                if (this.field[i][j].getClass() == SweeperMineField.class){
+                    if (!((SweeperMineField)(this.field[i][j])).getDefused()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -23,6 +40,7 @@ public class SweeperBoard {
      * @param uncoverdFields Aufgedeckte Felder
      */
     public SweeperBoard(int fieldsize, int mineCount, int uncoverdFields) {
+        this.fieldsize = fieldsize;
         this.field = new SweeperField[fieldsize][fieldsize];
         this.fillBoard(mineCount, uncoverdFields);
     }
@@ -93,14 +111,27 @@ public class SweeperBoard {
         return count;
     }
 
+    public Boolean moveOntoField(SweeperCoordinate coordinate) {
+        int xCord = coordinate.getXCord();
+        int yCord = coordinate.getYCord();
+
+        if(this.field[xCord][yCord].getClass() == SweeperMineField.class) {
+            return false;
+        }
+        ((SweeperNormalField)(this.field[xCord][yCord])).setUncoverd(true);
+        return true;
+    }
+
     public Boolean defuseBomb(SweeperCoordinate coordinate) {
-        if(this.field[coordinate.getXCord()][coordinate.getYCord()].getClass()
+        int xCord = coordinate.getXCord();
+        int yCord = coordinate.getYCord();
+
+        if(this.field[xCord][yCord].getClass()
             != SweeperMineField.class)
             return false;
-        else if(((SweeperMineField)
-                (this.field[coordinate.getXCord()]
-                    [coordinate.getYCord()])).getDefused() == false) {
-                        return false;
+        if(((SweeperMineField)
+            (this.field[xCord][yCord])).getDefused() == true) {
+            return false;
         }
         else {
             ((SweeperMineField)

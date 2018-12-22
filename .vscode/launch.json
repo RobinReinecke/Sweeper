@@ -5,7 +5,8 @@
             "name": "CodeLens (Launch) - Sweeper",
             "request": "launch",
             "mainClass": "Sweeper",
-            "projectName": "Sweeper"
+            "projectName": "Sweeper",
+            "console": "integratedTerminal"
         }
     ]
 }

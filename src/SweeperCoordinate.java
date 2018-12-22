@@ -7,10 +7,12 @@
 public class SweeperCoordinate {
 
     private int xCord;
-
+    
     public int getXCord(){
         return xCord;
     }
+
+    private char xCordChar;
 
     private int yCord;
 
@@ -21,17 +23,18 @@ public class SweeperCoordinate {
     public Boolean setCoordinate(String value, int fieldsize, String alphabet){
         if(value.length() != 2 ||
             alphabet.indexOf(value.charAt(0)) == -1 ||
-            Character.isDigit(value.charAt(1)) ) {
+            !Character.isDigit(value.charAt(1)) ) {
             return false;
         }
+        this.xCordChar = value.charAt(0);
         this.xCord = alphabet.indexOf(value.charAt(0));
-        this.yCord = (int)value.charAt(1) - 1;
+        this.yCord = Character.getNumericValue(value.charAt(1)) - 1;
         return true;
     }
 
     @Override
     public String toString(){
-        return xCord + String.valueOf(yCord);
+        return this.xCordChar + String.valueOf(this.yCord + 1);
     }
     
 }

@@ -25,12 +25,46 @@ public class SweeperController {
      * Startet das Spiel.
      */
     public void runGame() {
-        SweeperIO.printField(this.board.getField(), true);
         SweeperIO.printField(this.board.getField(), false);
+        
+        Boolean running = true;
+
+        do {
+            SweeperCoordinate coordinate = 
+                SweeperIO.requireCoordinate(this.board.getFieldsize());
+            
+            SweeperAction action = SweeperIO.requireAction();
+
+            if (action == SweeperAction.MOVEONTO){
+                running = this.moveOntoField(coordinate);
+            } else {
+                this.defuseMine(coordinate);
+            }
+            
+            if (!this.board.getStillUndefusedMines()) {
+                running = false;
+                SweeperIO.printWin();
+            }
+            
+            if (!running) {
+                continue;
+            }
+            SweeperIO.printField(this.board.getField(), false);
+        } while(running);
+
+        SweeperIO.printField(this.board.getField(), true);
     }
 
-    private void DefuseMine(SweeperCoordinate coordinate) {
-        Boolean success = this.board.defuseBomb(coordinate);
-        SweeperIO.printDefuse(success);
+    private Boolean moveOntoField(SweeperCoordinate coordinate) {
+        Boolean success = this.board.moveOntoField(coordinate);
+        SweeperIO.printMoveOnto(coordinate, success);
+        return success;
     }
+
+    private void defuseMine(SweeperCoordinate coordinate) {
+        Boolean success = this.board.defuseBomb(coordinate);
+        SweeperIO.printDefuse(coordinate, success);
+    }
+
+
 }
