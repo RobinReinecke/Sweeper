@@ -7,6 +7,17 @@
 public class SweeperNormalField extends SweeperField {
 
     private int adjacentBombs;
+    
+    private Boolean uncoverd = false;
+
+    public Boolean getUncoverd(){
+        return this.uncoverd;
+    }
+
+    public void setUncoverd(Boolean value){
+        this.uncoverd = value;
+    }
+
 
     public int getAdjacentBombs() {
         return adjacentBombs;
@@ -14,6 +25,13 @@ public class SweeperNormalField extends SweeperField {
 
     public void setAdjacentBombs(int value) {
         this.adjacentBombs = value;
+    }
+
+    public String toString(Boolean uncoverd){
+        if (uncoverd || this.uncoverd) {
+            return String.valueOf(adjacentBombs);
+        }
+        return " ";
     }
     
 }

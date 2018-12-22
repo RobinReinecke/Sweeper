@@ -25,6 +25,12 @@ public class SweeperController {
      * Startet das Spiel.
      */
     public void runGame() {
-        
+        SweeperIO.printField(this.board.getField(), true);
+        SweeperIO.printField(this.board.getField(), false);
+    }
+
+    private void DefuseMine(SweeperCoordinate coordinate) {
+        Boolean success = this.board.defuseBomb(coordinate);
+        SweeperIO.printDefuse(success);
     }
 }

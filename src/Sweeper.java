@@ -5,7 +5,7 @@
  * @version 1.0
  */
 public class Sweeper {
-    public static void main() {
+    public static void main(String[] args) {
         int fieldsize = 10;
         int mineCount = 23;
         int uncoveredFields = 5;

@@ -1,5 +1,7 @@
 import java.util.Random;
 
+import javax.lang.model.util.ElementScanner6;
+
 /**
  * Spielfeld.
  * 
@@ -10,6 +12,10 @@ public class SweeperBoard {
 
     private SweeperField[][] field;
     
+    public SweeperField[][] getField(){
+        return field;
+    }
+
     /**
      * Initialisieren des Spielfelds
      * @param fieldsize Spielfeldgröße
@@ -31,10 +37,11 @@ public class SweeperBoard {
 
         //Minen zufällig platzieren
         for (int i = 0; i < mineCount; i++) {
-            SweeperField tempField = field[rdm.nextInt(field[0].length + 1)][rdm.nextInt(field[0].length + 1)];
+            int xCord = rdm.nextInt(field[0].length);
+            int yCord = rdm.nextInt(field[1].length);
             
-            if (tempField == null) {
-                tempField = new SweeperMineField();
+            if (field[xCord][yCord] == null) {
+                field[xCord][yCord] = new SweeperMineField();
             }
             else{
                 i--;
@@ -46,17 +53,60 @@ public class SweeperBoard {
             for (int j = 0; j < field[1].length; j++) {
                 if (field[i][j] == null) {
                     field[i][j] = new SweeperNormalField();
-                    field[i][j].adjacentBombs = countAdjacentBombs(field[i][j]);
+                    ((SweeperNormalField) field[i][j]).setAdjacentBombs(countAdjacentBombs(i, j));
                 }
+            }
+        }
+
+        //Felder aufdecken
+        for (int i = 0; i < uncoverdFields; i++) {
+            int xCord = rdm.nextInt(field[0].length);
+            int yCord = rdm.nextInt(field[1].length);
+            
+            if (field[xCord][yCord].getClass() == SweeperNormalField.class) {
+                if (!((SweeperNormalField) field[xCord][yCord]).getUncoverd()) {
+                    ((SweeperNormalField) field[xCord][yCord]).setUncoverd(true);
+                }
+            }
+            else{
+                i--;
             }
         }
     }
 
-    private SweeperField countAdjacentBombs(SweeperField field) {
-        for (int k = 0; k < 3; k++) {
-            for (int i = 0; i < max; i++) {
-                
+    private int countAdjacentBombs(int xCord, int yCord) {
+        int count = 0;
+        for (int k = -1; k < 2; k++) {
+            for (int i = -1; i < 2; i++) {
+                if (xCord + k >= 0 && yCord + i >= 0 &&
+                    xCord + k <= field[0].length - 1 &&
+                    yCord + i <= field[1].length - 1) {
+                    if (this.field[xCord + k][yCord + i] != null) {
+                        if (this.field[xCord + k][yCord + i].getClass() 
+                            == SweeperMineField.class) {
+                            count++;
+                        }
+                    }
+                }
             }
+        }
+        return count;
+    }
+
+    public Boolean defuseBomb(SweeperCoordinate coordinate) {
+        if(this.field[coordinate.getXCord()][coordinate.getYCord()].getClass()
+            != SweeperMineField.class)
+            return false;
+        else if(((SweeperMineField)
+                (this.field[coordinate.getXCord()]
+                    [coordinate.getYCord()])).getDefused() == false) {
+                        return false;
+        }
+        else {
+            ((SweeperMineField)
+            (this.field[coordinate.getXCord()]
+                [coordinate.getYCord()])).setDefused(true);
+            return true;
         }
     }
 }

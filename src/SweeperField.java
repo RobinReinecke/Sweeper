@@ -6,5 +6,5 @@
  */
 public abstract class SweeperField {
 
-    
+    public abstract String toString(Boolean uncoverd);
 }
