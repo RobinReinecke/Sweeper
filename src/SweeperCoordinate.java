@@ -8,7 +8,7 @@ public class SweeperCoordinate {
 
     private int xCord;
     
-    public int getXCord(){
+    public int getXCord() {
         return xCord;
     }
 
@@ -16,14 +16,21 @@ public class SweeperCoordinate {
 
     private int yCord;
 
-    public int getYCord(){
+    public int getYCord() {
         return yCord;
     }
 
-    public Boolean setCoordinate(String value, int fieldsize, String alphabet){
-        if(value.length() != 2 ||
-            alphabet.indexOf(value.charAt(0)) == -1 ||
-            !Character.isDigit(value.charAt(1)) ) {
+    /**
+     * Koordinate parsen.
+     * @param value zu parsender String
+     * @param fieldsize Größe des Felds
+     * @param alphabet Alphabet
+     * @return true = erfolgreich, false = fehlerhafter String
+     */
+    public Boolean setCoordinate(String value, int fieldsize, String alphabet) {
+        if (value.length() != 2 
+            || alphabet.indexOf(value.charAt(0)) == -1 
+            || !Character.isDigit(value.charAt(1)) ) {
             return false;
         }
         this.xCordChar = value.charAt(0);
@@ -33,7 +40,7 @@ public class SweeperCoordinate {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.xCordChar + String.valueOf(this.yCord + 1);
     }
     

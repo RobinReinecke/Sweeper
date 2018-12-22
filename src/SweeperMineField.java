@@ -11,15 +11,20 @@ public class SweeperMineField extends SweeperField {
         return defused;
     }
 
-    public void setDefused(Boolean value){
+    public void setDefused(Boolean value) {
         this.defused = value;
     }
 
-    public String toString(Boolean uncoverd){
-        if(uncoverd) {
+    /**
+     * Ausgabe des Felds als String
+     * @param uncoverd True = aufgedeckt
+     * @return Feld als String
+     */
+    public String toString(Boolean uncoverd) {
+        if (uncoverd) {
             return "X";
         }
-        if(this.defused) {
+        if (this.defused) {
             return "!";
         }
         return " ";

@@ -12,6 +12,11 @@ public class SweeperIO {
 
     private static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Feld ausgeben
+     * @param field Das auszugebene Feld
+     * @param uncoverd true = Alle Felder aufdecken 
+     */
     public static void printField(SweeperField[][] field, Boolean uncoverd) {
         StringBuilder sb = new StringBuilder("  |");
         for (int i = 0; i < field[0].length; i++) {
@@ -20,7 +25,7 @@ public class SweeperIO {
         sb.append("\n");
 
         for (int i = 0; i < field[1].length; i++) {
-            if (i <= 8){
+            if (i <= 8) {
                 sb.append(" ");
             }            
             sb.append(i + 1);
@@ -35,50 +40,66 @@ public class SweeperIO {
         System.out.println(sb.toString());
     }
     
-    public static SweeperCoordinate requireCoordinate(int fieldsize){
+    /**
+     * Eingabe einer Koordinate vom Nutzer fordern.
+     * @param fieldsize Größe des Feldes zur Validierung
+     * @return Koordinatenobjekt
+     */
+    public static SweeperCoordinate requireCoordinate(int fieldsize) {
         SweeperCoordinate cord = new SweeperCoordinate();
-        //Scanner scanner = new Scanner(System.in);
         String coordinate = "";
         do {
             System.out.print("Enter next coordinate (e.g. \"H4\"): ");
             coordinate = scanner.next();
-        } while(!cord.setCoordinate(coordinate, fieldsize, ALPHABET));
+        } while (!cord.setCoordinate(coordinate, fieldsize, ALPHABET));
 
         return cord;
     }
 
-    public static SweeperAction requireAction(){
+    /**
+     * Eingabe einer Action vom Nutzer fordern.
+     * @return SweeperAction
+     */
+    public static SweeperAction requireAction() {
         //Scanner scanner = new Scanner(System.in);
         int action = -1;
         do {    
             System.out.print("Enter action (1 for ’move onto’ , 2 for ’defuse’): ");
             try {
                 action = scanner.nextInt();
-            } catch(InputMismatchException exception) {
+            } catch (InputMismatchException exception) {
                 scanner.nextLine();
                 scanner.reset();
             }
-        } while(action != 1 && action != 2);
+        } while (action != 1 && action != 2);
 
-        if(action == 1) {
-            return SweeperAction.MOVEONTO;
-        }
-        else {
-            return SweeperAction.DEFUSE;
-        }
+        return action == 1 ? SweeperAction.MOVEONTO : SweeperAction.DEFUSE;
     }
 
+    /**
+     * Ausgabe des Entschärfens.
+     * @param coordinate Koordinate
+     * @param success True = Entschärfen war erfolgreich
+     */
     public static void printDefuse(SweeperCoordinate coordinate, Boolean success) {
         System.out.println("Trying to defuse'" + coordinate.toString() + "'");
         System.out.println(success ? "Defused a landmine!" : "Nothing happend!");
     }
 
+    /**
+     * Ausgabe des Aufdeckens.
+     * @param coordinate Koordinate
+     * @param success False = Auf eine Mine getreten
+     */
     public static void printMoveOnto(SweeperCoordinate coordinate, Boolean success) {
-        System.out.println(success ? "Moving onto '" + coordinate.toString() + "'" : 
-            "Stepped on a landmine!");
+        System.out.println(success ? "Moving onto '" + coordinate.toString() + "'" 
+            : "Stepped on a landmine!");
     }
 
-    public static void printWin(){
+    /**
+     * Ausgabe, dass der Nutzer gewonnen hat.
+     */
+    public static void printWin() {
         System.out.println("You won!");
     }
 }

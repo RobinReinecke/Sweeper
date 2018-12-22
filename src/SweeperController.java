@@ -13,9 +13,9 @@ public class SweeperController {
 
     /**
      * Konstruktor
-     * @param _fieldsize Feldgröße
-     * @param _mineCount Minenanzahl
-     * @param _uncoverdFields Aufgedeckte Felder
+     * @param fieldsize Feldgröße
+     * @param mineCount Minenanzahl
+     * @param uncoverdFields Aufgedeckte Felder
      */
     public SweeperController(int fieldsize, int mineCount, int uncoverdFields) {
         this.board = new SweeperBoard(fieldsize, mineCount, uncoverdFields);
@@ -35,7 +35,7 @@ public class SweeperController {
             
             SweeperAction action = SweeperIO.requireAction();
 
-            if (action == SweeperAction.MOVEONTO){
+            if (action == SweeperAction.MOVEONTO) {
                 running = this.moveOntoField(coordinate);
             } else {
                 this.defuseMine(coordinate);
@@ -50,7 +50,7 @@ public class SweeperController {
                 continue;
             }
             SweeperIO.printField(this.board.getField(), false);
-        } while(running);
+        } while (running);
 
         SweeperIO.printField(this.board.getField(), true);
     }

@@ -10,21 +10,25 @@ public class SweeperBoard {
 
     private SweeperField[][] field;
     
-    public SweeperField[][] getField(){
+    public SweeperField[][] getField() {
         return this.field;
     }
 
     private int fieldsize;
 
-    public int getFieldsize(){
+    public int getFieldsize() {
         return this.fieldsize;
     }
 
-    public Boolean getStillUndefusedMines(){
+    /**
+     * Prüft, ob es noch nicht entschärfte Minen gibt.
+     * @return True = ja, false = nein
+     */
+    public Boolean getStillUndefusedMines() {
         for (int i = 0; i < field[0].length; i++) {
             for (int j = 0; j < field[1].length; j++) {
-                if (this.field[i][j].getClass() == SweeperMineField.class){
-                    if (!((SweeperMineField)(this.field[i][j])).getDefused()) {
+                if (this.field[i][j].getClass() == SweeperMineField.class) {
+                    if (!((SweeperMineField) (this.field[i][j])).getDefused()) {
                         return true;
                     }
                 }
@@ -60,8 +64,7 @@ public class SweeperBoard {
             
             if (field[xCord][yCord] == null) {
                 field[xCord][yCord] = new SweeperMineField();
-            }
-            else{
+            } else {
                 i--;
             }
         }
@@ -85,8 +88,7 @@ public class SweeperBoard {
                 if (!((SweeperNormalField) field[xCord][yCord]).getUncoverd()) {
                     ((SweeperNormalField) field[xCord][yCord]).setUncoverd(true);
                 }
-            }
-            else{
+            } else {
                 i--;
             }
         }
@@ -96,9 +98,9 @@ public class SweeperBoard {
         int count = 0;
         for (int k = -1; k < 2; k++) {
             for (int i = -1; i < 2; i++) {
-                if (xCord + k >= 0 && yCord + i >= 0 &&
-                    xCord + k <= field[0].length - 1 &&
-                    yCord + i <= field[1].length - 1) {
+                if (xCord + k >= 0 && yCord + i >= 0 
+                    && xCord + k <= field[0].length - 1 
+                    && yCord + i <= field[1].length - 1) {
                     if (this.field[xCord + k][yCord + i] != null) {
                         if (this.field[xCord + k][yCord + i].getClass() 
                             == SweeperMineField.class) {
@@ -111,29 +113,39 @@ public class SweeperBoard {
         return count;
     }
 
+    /**
+     * Aufdecken des Felds.
+     * @param coordinate Koordinate des Feldes.
+     * @return True = Feld wurde aufgedeckt, False = Mine aufgedeckt
+     */
     public Boolean moveOntoField(SweeperCoordinate coordinate) {
         int xCord = coordinate.getXCord();
         int yCord = coordinate.getYCord();
 
-        if(this.field[xCord][yCord].getClass() == SweeperMineField.class) {
+        if (this.field[xCord][yCord].getClass() == SweeperMineField.class) {
             return false;
         }
-        ((SweeperNormalField)(this.field[xCord][yCord])).setUncoverd(true);
+        ((SweeperNormalField) (this.field[xCord][yCord])).setUncoverd(true);
         return true;
     }
 
+    /**
+     * Versucht das Feld zu entschärfen.
+     * @param coordinate Koordinate des zu entschärfenden Feldes.
+     * @return True = geklappt, False = nicht geklappt
+     */
     public Boolean defuseBomb(SweeperCoordinate coordinate) {
         int xCord = coordinate.getXCord();
         int yCord = coordinate.getYCord();
 
-        if(this.field[xCord][yCord].getClass()
-            != SweeperMineField.class)
-            return false;
-        if(((SweeperMineField)
-            (this.field[xCord][yCord])).getDefused() == true) {
+        if (this.field[xCord][yCord].getClass()
+            != SweeperMineField.class) {
             return false;
         }
-        else {
+        if (((SweeperMineField)
+            (this.field[xCord][yCord])).getDefused() == true) {
+            return false;
+        } else {
             ((SweeperMineField)
             (this.field[coordinate.getXCord()]
                 [coordinate.getYCord()])).setDefused(true);

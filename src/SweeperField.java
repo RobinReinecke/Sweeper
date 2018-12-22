@@ -6,5 +6,10 @@
  */
 public abstract class SweeperField {
 
+    /**
+     * Umfandlung des Feldes in einen String
+     * @param uncoverd Feld aufgedeckt ausgeben oder nicht.
+     * @return Feld als String.
+     */
     public abstract String toString(Boolean uncoverd);
 }

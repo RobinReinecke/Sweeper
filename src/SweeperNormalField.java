@@ -10,11 +10,11 @@ public class SweeperNormalField extends SweeperField {
     
     private Boolean uncoverd = false;
 
-    public Boolean getUncoverd(){
+    public Boolean getUncoverd() {
         return this.uncoverd;
     }
 
-    public void setUncoverd(Boolean value){
+    public void setUncoverd(Boolean value) {
         this.uncoverd = value;
     }
 
@@ -27,7 +27,12 @@ public class SweeperNormalField extends SweeperField {
         this.adjacentBombs = value;
     }
 
-    public String toString(Boolean uncoverd){
+    /**
+     * Ausgabe des Felds als String
+     * @param uncoverd True = aufgedeckt
+     * @return Feld als String
+     */
+    public String toString(Boolean uncoverd) {
         if (uncoverd || this.uncoverd) {
             return String.valueOf(adjacentBombs);
         }
