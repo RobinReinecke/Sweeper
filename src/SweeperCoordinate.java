@@ -28,14 +28,33 @@ public class SweeperCoordinate {
      * @return true = erfolgreich, false = fehlerhafter String
      */
     public Boolean setCoordinate(String value, int fieldsize, String alphabet) {
-        if (value.length() != 2 
-            || alphabet.indexOf(value.charAt(0)) == -1 
-            || !Character.isDigit(value.charAt(1)) ) {
+        if (value.length() < 2 | value.length() > 3) {
             return false;
         }
+        if (alphabet.indexOf(value.charAt(0)) == -1 ) {
+            return false;
+        }
+        if (value.length() >= 2) {
+            if (!Character.isDigit(value.charAt(1))) {
+                return false;
+            }
+            if(Character.getNumericValue(value.charAt(1)) < 1 
+            || Character.getNumericValue(value.charAt(1)) > fieldsize) {
+                return false;
+            }
+            if (value.length() == 3) {
+                if (!Character.isDigit(value.charAt(2))) {
+                    return false;
+                }
+                if (Integer.valueOf(value.substring(1)) > fieldsize) {
+                    return false;
+                }
+            }
+        }
+
         this.xCordChar = value.charAt(0);
         this.xCord = alphabet.indexOf(value.charAt(0));
-        this.yCord = Character.getNumericValue(value.charAt(1)) - 1;
+        this.yCord = Integer.valueOf(value.substring(1)) - 1;
         return true;
     }
 
